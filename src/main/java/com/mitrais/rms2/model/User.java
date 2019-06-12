@@ -1,9 +1,6 @@
 package com.mitrais.rms2.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -13,6 +10,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "user_name", nullable = false)
     @NotBlank(message = "username is mandatory")
     private String username;
 

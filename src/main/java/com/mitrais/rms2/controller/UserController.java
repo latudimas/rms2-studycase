@@ -9,11 +9,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+//@RequestMapping("/user")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -29,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/adduser")
-    public String addUser(@Valid   user, BindingResult result, Model model) {
+    public String addUser(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "add-user";
         }
@@ -66,8 +68,9 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/getAll")
-    public List<User> getAllUser() {
-        return (List<User>) userRepository.findAll();
+    @GetMapping("/list")
+    public String showUpdateForm(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "index";
     }
 }
