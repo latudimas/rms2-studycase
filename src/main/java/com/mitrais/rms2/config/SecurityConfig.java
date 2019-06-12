@@ -18,36 +18,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.accessDeniedHandler = accessDeniedHandler;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
-        http.authorizeRequests()
-                .antMatchers("/",
-                        "/js/**",
-                        "/css/**",
-                        "/img/**",
-                        "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                .and()
-                .logout()
-                    .invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login?logout")
-                    .permitAll()
-                .and()
-                .exceptionHandling()
-                    .accessDeniedHandler(accessDeniedHandler);
-    }
+//        http.authorizeRequests()
+//                .antMatchers("/",
+//                        "/js/**",
+//                        "/css/**",
+//                        "/img/**",
+//                        "/webjars/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                    .loginPage("/login")
+//                    .permitAll()
+//                .and()
+//                .logout()
+//                    .invalidateHttpSession(true)
+//                    .clearAuthentication(true)
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                    .logoutSuccessUrl("/login?logout")
+//                    .permitAll()
+//                .and()
+//                .exceptionHandling()
+//                    .accessDeniedHandler(accessDeniedHandler);
+//    }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        super.configure(auth);
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password("password");
+//    }
+
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password");
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .formLogin()
+                .loginPage("/login.html")
+                .failureUrl("/login-error.html")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/index.html");
     }
 }

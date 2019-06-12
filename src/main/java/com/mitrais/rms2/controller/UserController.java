@@ -73,4 +73,19 @@ public class UserController {
         model.addAttribute("users", userRepository.findAll());
         return "index";
     }
+
+    /**
+     * Login Controller
+     * @return
+     */
+    @GetMapping("/login.html")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/login-error.html")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login.html";
+    }
 }
