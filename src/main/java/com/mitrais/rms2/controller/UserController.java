@@ -68,7 +68,7 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public String showUpdateForm(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "index";
