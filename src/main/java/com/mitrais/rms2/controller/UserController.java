@@ -9,13 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
-//@RequestMapping("/user")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -74,18 +71,26 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/test")
+    public void test() {
+        User user = userRepository.findAll().stream()
+                .filter(u -> u.getUsername().equals("Gibson"))
+                .findFirst().orElse(null);
+        System.out.println(user.getUsername() + "  " +  user.getPassword() + "  " + user.getRole());
+    }
+
     /**
      * Login Controller
      * @return
      */
-    @GetMapping("/login.html")
-    public String login() {
+    @GetMapping("/login")
+    public String login(Model model) {
         return "login";
     }
-
-    @GetMapping("/login-error.html")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login.html";
-    }
+//
+//    @GetMapping("/login-error")
+//    public String loginError(Model model) {
+//        model.addAttribute("loginError", true);
+//        return "login";
+//    }
 }
