@@ -23,52 +23,13 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final LoggingAccessDeniedHandler accessDeniedHandler;
-
-//    @Autowired
-//    public SecurityConfig(LoggingAccessDeniedHandler accessDeniedHandler) {
-//        this.accessDeniedHandler = accessDeniedHandler;
-//    }
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
-//        http.authorizeRequests()
-//                .antMatchers("/",
-//                        "/js/**",
-//                        "/css/**",
-//                        "/img/**",
-//                        "/webjars/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                .and()
-//                .logout()
-//                    .invalidateHttpSession(true)
-//                    .clearAuthentication(true)
-//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                    .logoutSuccessUrl("/login?logout")
-//                    .permitAll()
-//                .and()
-//                .exceptionHandling()
-//                    .accessDeniedHandler(accessDeniedHandler);
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("password");
-//    }
-
-
-    @Autowired
-    private UserDetailsService customUserDetailsService;
-
-    @Autowired
+    private final UserDetailsService customUserDetailsService;
     private DataSource dataSource;
+
+    public SecurityConfig(UserDetailsService customUserDetailsService, DataSource dataSource) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -82,18 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .formLogin()
-//                .loginPage("/login.html")
-//                .failureUrl("/login-error.html")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/index.html");
-//    }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -105,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .antMatchers("/").permitAll()
                             .antMatchers("/delete/**").hasRole("admin")
                             .antMatchers("/edit/**").hasRole("admin")
-                            .antMatchers("/signup").hasRole("admin")
+                            .antMatchers("/signup").permitAll()
                             .and()
                         .formLogin()
                             .loginPage("/login")
